@@ -1,7 +1,7 @@
-export default async function (methodId, payload = {}, loading) {
+export default async function (methodId, payload = {}, loading = null) {
   // laodbar ? startLoadingBar() : "";
   try {
-    loading ? showLoading() : '';
+    // loading ? showLoading() : '';
     const response = await $fetch('/api/gasApi', {
       method: 'POST',
       body: {
@@ -10,18 +10,18 @@ export default async function (methodId, payload = {}, loading) {
       },
     });
     // loadbar ? stopLoadingBar() : "";
-    loading ? hideLoading() : '';
+    // loading ? hideLoading() : '';
     // console.log(response);
     if (response.error) {
-      showNotify({ msg: `Error. ${response.error}`, color: 'negative' });
+      // showNotify({ msg: `Error. ${response.error}`, color: 'negative' });
       throw createError({ statusCode: 404, statusMessage: response.error });
     }
     return response;
   } catch (error) {
     // loadbar ? stopLoadingBar() : "";
-    loading ? hideLoading() : '';
+    // loading ? hideLoading() : '';
     console.error('Error in useGasData:', error);
-    showNotify({ msg: `Error. ${error.statusMessage}`, color: 'negative' });
+    // showNotify({ msg: `Error. ${error.statusMessage}`, color: 'negative' });
     throw createError({ statusCode: 404, statusMessage: 'Network Error' });
     // return { error: error.statusMessage };
   }

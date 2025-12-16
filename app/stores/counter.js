@@ -1,6 +1,4 @@
 import secureLs from 'secure-ls';
-const { SECURELS_SECRET } = useRuntimeConfig().public;
-
 export const useCounterStore = defineStore(
   'counter',
   () => {
@@ -18,13 +16,13 @@ export const useCounterStore = defineStore(
     persist: {
       storage: {
         getItem: (key) => {
-          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: SECURELS_SECRET }).get(key);
+          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: useRuntimeConfig().public.SECURELS_SECRET }).get(key);
         },
         setItem: (key, value) => {
-          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: SECURELS_SECRET }).set(key, value);
+          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: useRuntimeConfig().public.SECURELS_SECRET }).set(key, value);
         },
         removeItem: (key) => {
-          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: SECURELS_SECRET }).remove(key);
+          return new secureLs({ encodingType: 'aes', isCompression: true, encryptionSecret: useRuntimeConfig().public.SECURELS_SECRET }).remove(key);
         },
       },
     },

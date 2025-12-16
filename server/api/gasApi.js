@@ -30,6 +30,7 @@ export default defineEventHandler(async (event) => {
       JSON.stringify({
         method: methodName, // Use the mapped method name
         ...payload, // Send the payload
+        clientSecret: useRuntimeConfig().server.GAS_API_SECRET
       })
     )}`;
     // console.log(fetchResponse);

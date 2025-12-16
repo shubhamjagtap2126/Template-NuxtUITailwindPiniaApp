@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { useGsapAnimations } from '~/composables/useGsapAnimations';
-import { useSwiper } from '~/composables/useSwiper';
 
 useHead({
   title: 'About Us - Our Story & Vision',
@@ -130,7 +128,7 @@ const timeline = [
 ];
 
 // Lifecycle
-onMounted(() => {
+onMounted(async () => {
   // Animate elements on scroll
   setTimeout(() => {
     fadeInUp('.hero-content', 0.2);
@@ -152,6 +150,10 @@ onMounted(() => {
       }
     });
   }, 100);
+
+  // Fetch data from API
+  // const { data } = await useGasData("1", { sheetName: "Centers", range: "A2:C" });
+  // console.log("aboutData", data);
 });
 
 onUnmounted(() => {
@@ -160,7 +162,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <!-- Hero Section -->
     <section class="relative py-20 lg:py-32 overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
@@ -168,7 +171,8 @@ onUnmounted(() => {
         <div class="hero-content text-center max-w-4xl mx-auto">
           <h1 class="main-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text">About Our Vision</h1>
           <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-            We're a passionate team of developers, designers, and innovators dedicated to revolutionizing the way web applications are built.
+            We're a passionate team of developers, designers, and innovators dedicated to revolutionizing the way web
+            applications are built.
           </p>
           <div class="flex flex-wrap justify-center gap-4">
             <UBadge color="blue" variant="soft" size="lg">Innovation First</UBadge>
@@ -205,11 +209,13 @@ onUnmounted(() => {
           <div class="mission-content">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">Our Mission</h2>
             <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-              We believe that building modern web applications shouldn't be complicated. Our mission is to provide developers with powerful, easy-to-use tools and templates that accelerate development
+              We believe that building modern web applications shouldn't be complicated. Our mission is to provide
+              developers with powerful, easy-to-use tools and templates that accelerate development
               while maintaining the highest standards of performance and design.
             </p>
             <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-              From startups to enterprise companies, we're helping teams ship faster, scale better, and create exceptional user experiences with our cutting-edge technology stack.
+              From startups to enterprise companies, we're helping teams ship faster, scale better, and create
+              exceptional user experiences with our cutting-edge technology stack.
             </p>
             <div class="space-y-4">
               <div class="flex items-center gap-3">
@@ -228,13 +234,8 @@ onUnmounted(() => {
           </div>
           <div class="relative">
             <div class="glass-card p-8 text-center">
-              <NuxtImg
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop&q=80"
-                alt="Team collaboration"
-                class="w-full h-64 object-cover rounded-lg mb-6"
-                :width="600"
-                :height="400"
-              />
+              <NuxtImg src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop&q=80"
+                alt="Team collaboration" class="w-full h-64 object-cover rounded-lg mb-6" :width="600" :height="400" />
               <h3 class="text-xl font-bold mb-2">Building the Future</h3>
               <p class="text-gray-600 dark:text-gray-400">Together, we create amazing digital experiences</p>
             </div>
@@ -252,9 +253,11 @@ onUnmounted(() => {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div v-for="(value, index) in values" :key="index" class="value-card glass-card p-8 hover:scale-105 transition-all duration-300 group">
+          <div v-for="(value, index) in values" :key="index"
+            class="value-card glass-card p-8 hover:scale-105 transition-all duration-300 group">
             <div class="mb-6">
-              <div :class="`w-16 h-16 mx-auto rounded-2xl bg-${value.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
+              <div
+                :class="`w-16 h-16 mx-auto rounded-2xl bg-${value.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
                 <UIcon :name="value.icon" :class="`w-8 h-8 text-${value.color}-500`" />
               </div>
             </div>
@@ -280,12 +283,15 @@ onUnmounted(() => {
         <div class="max-w-4xl mx-auto">
           <div class="relative">
             <!-- Timeline line -->
-            <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 transform md:-translate-x-0.5"></div>
+            <div
+              class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500 transform md:-translate-x-0.5">
+            </div>
 
             <div v-for="(item, index) in timeline" :key="index" class="timeline-item relative mb-12">
               <div :class="['flex items-center gap-8', index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse']">
                 <!-- Timeline dot -->
-                <div class="absolute left-4 md:left-1/2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full border-4 border-blue-500 transform md:-translate-x-1/2 flex items-center justify-center z-10">
+                <div
+                  class="absolute left-4 md:left-1/2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full border-4 border-blue-500 transform md:-translate-x-1/2 flex items-center justify-center z-10">
                   <UIcon :name="item.icon" class="w-4 h-4 text-blue-500" />
                 </div>
 
@@ -317,13 +323,9 @@ onUnmounted(() => {
             <SwiperSlide v-for="(member, index) in team" :key="index">
               <div class="glass-card p-6 mx-4 text-center group hover:scale-105 transition-all duration-300">
                 <div class="mb-6">
-                  <NuxtImg
-                    :src="member.avatar"
-                    :alt="member.name"
+                  <NuxtImg :src="member.avatar" :alt="member.name"
                     class="w-24 h-24 rounded-full object-cover mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
-                    :width="96"
-                    :height="96"
-                  />
+                    :width="96" :height="96" />
                   <h3 class="text-xl font-bold mb-1">{{ member.name }}</h3>
                   <p class="text-blue-500 font-medium mb-3">{{ member.role }}</p>
                   <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">{{ member.bio }}</p>
@@ -338,7 +340,8 @@ onUnmounted(() => {
                 </div>
 
                 <div class="flex justify-center gap-3">
-                  <UButton v-for="(url, platform) in member.social" :key="platform" :to="url" target="_blank" variant="ghost" size="sm" :icon="`i-lucide-${platform}`" />
+                  <UButton v-for="(url, platform) in member.social" :key="platform" :to="url" target="_blank"
+                    variant="ghost" size="sm" :icon="`i-lucide-${platform}`" />
                 </div>
               </div>
             </SwiperSlide>
@@ -360,7 +363,8 @@ onUnmounted(() => {
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <NuxtLink to="/contact">
-            <UButton size="xl" color="white" variant="solid" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
+            <UButton size="xl" color="white" variant="solid"
+              class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
               <template #leading>
                 <UIcon name="i-lucide-mail" class="w-5 h-5" />
               </template>
@@ -369,7 +373,8 @@ onUnmounted(() => {
           </NuxtLink>
 
           <NuxtLink to="/">
-            <UButton size="xl" color="white" variant="outline" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
+            <UButton size="xl" color="white" variant="outline"
+              class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
               <template #leading>
                 <UIcon name="i-lucide-arrow-left" class="w-5 h-5" />
               </template>

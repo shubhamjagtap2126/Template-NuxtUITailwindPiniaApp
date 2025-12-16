@@ -21,9 +21,9 @@ export default defineNuxtConfig({
   css: ['@/assets/main.css'],
   runtimeConfig: {
     public: { SECURELS_SECRET: process.env.SECURELS_SECRET },
-    server: { SCRIPT_PROD_URL: process.env.SCRIPT_PROD_URL },
+    server: { SCRIPT_PROD_URL: process.env.SCRIPT_PROD_URL, GAS_API_SECRET: process.env.GAS_API_SECRET },
   },
-  srcDir: 'client/',
+  // srcDir: 'client/',
   compatibilityDate: '2025-05-15',
   nitro: {
     preset: 'netlify',

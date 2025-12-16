@@ -1,7 +1,13 @@
 @import 'tailwindcss';
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/effect-fade';
 @import '@nuxt/ui';
 
 :root {
+  --ui-primary: #184890;
+
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -10,6 +16,10 @@
   --glass-border: rgba(255, 255, 255, 0.2);
   --shadow-light: 0 8px 32px rgba(31, 38, 135, 0.37);
   --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.dark {
+  --ui-primary: #184890;
 }
 
 @layer base {
@@ -34,7 +44,7 @@
   .glass-card {
     @apply backdrop-blur-lg bg-white/10 dark:bg-black/10;
     @apply border border-white/20 dark:border-white/10;
-    @apply shadow-xl rounded-2xl;
+    @apply shadow-xl rounded-b-2xl;
   }
 
   .gradient-text {

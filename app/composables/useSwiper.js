@@ -1,10 +1,5 @@
+import { Autoplay, EffectFade, Navigation, Pagination, Parallax } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination, Autoplay, EffectFade, Parallax } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
-import 'swiper/css/parallax';
 
 export const useSwiper = () => {
   // Default configuration for hero carousel
@@ -23,11 +18,11 @@ export const useSwiper = () => {
     },
     parallax: true,
     navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
+      nextEl: '.hero-button-next',
+      prevEl: '.hero-button-prev',
     },
     pagination: {
-      el: '.swiper-pagination',
+      el: '.hero-pagination',
       clickable: true,
       dynamicBullets: true,
     },

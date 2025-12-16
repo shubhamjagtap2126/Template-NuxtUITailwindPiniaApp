@@ -1,6 +1,6 @@
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
-import { useGsapAnimations } from '~/composables/useGsapAnimations';
+import { onMounted, onUnmounted, reactive, ref } from 'vue';
+
 
 useHead({
   title: 'Contact Us - Get in Touch',
@@ -10,9 +10,6 @@ useHead({
     { property: 'og:description', content: "Get in touch with our team. We'd love to hear from you." },
   ],
 });
-
-// Animation composables
-const { fadeInUp, animateFormFields, cleanup } = useGsapAnimations();
 
 // Toast for notifications
 const toast = useToast();
@@ -24,69 +21,60 @@ const isSubmitting = ref(false);
 // Contact form fields
 const contactFields = [
   {
-    name: 'name',
-    type: 'text',
-    label: 'Full Name',
-    placeholder: 'Enter your full name',
+    name: "contact",
+    label: "Contact Number",
+    type: "tel",
+    regex: "^[6-9]{1}[0-9]{9}$",
+    errorMessage: "Valid 10-digit number",
     required: true,
-    icon: 'i-lucide-user',
-    color: 'primary',
-    size: 'lg',
+    clearable: true,
+    mask: "##########",
+    filled: true,
+    prependIcon: "line-md:phone-call-loop",
   },
   {
-    name: 'email',
-    type: 'email',
-    label: 'Email Address',
-    placeholder: 'Enter your email address',
+    name: "firstName",
+    label: "First Name",
+    type: "text",
+    regex: "^[a-zA-Z]{3,}$",
+    errorMessage: "Min 3 English characters",
     required: true,
-    icon: 'i-lucide-mail',
-    color: 'primary',
-    size: 'lg',
+    clearable: true,
+    filled: true,
+    prependIcon: "material-symbols:person",
   },
   {
-    name: 'phone',
-    type: 'tel',
-    label: 'Phone Number',
-    placeholder: 'Enter your phone number (optional)',
-    required: false,
-    icon: 'i-lucide-phone',
-    color: 'primary',
-    size: 'lg',
-  },
-  {
-    name: 'subject',
-    type: 'select',
-    label: 'Subject',
-    placeholder: 'Select a subject',
+    name: "lastName",
+    label: "Last Name",
+    type: "text",
+    regex: "^[a-zA-Z]{3,}$",
+    errorMessage: "Min 3 English characters",
     required: true,
-    icon: 'i-lucide-tag',
-    color: 'primary',
-    size: 'lg',
-    options: [
-      { value: 'general', label: 'General Inquiry' },
-      { value: 'support', label: 'Technical Support' },
-      { value: 'business', label: 'Business Partnership' },
-      { value: 'feedback', label: 'Feedback & Suggestions' },
-      { value: 'other', label: 'Other' },
-    ],
+    clearable: true,
+    filled: true,
+    prependIcon: "material-symbols:person",
   },
   {
-    name: 'message',
-    type: 'textarea',
-    label: 'Message',
-    placeholder: 'Tell us about your project or inquiry...',
+    name: "email",
+    label: "Email Address",
+    type: "email",
+    regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+    errorMessage: "Valid email required",
     required: true,
-    rows: 6,
-    color: 'primary',
-    size: 'lg',
+    clearable: true,
+    filled: true,
+    prependIcon: "line-md:email-check-filled",
   },
   {
-    name: 'newsletter',
-    type: 'toggle',
-    label: 'Subscribe to our newsletter for updates',
-    required: false,
-    color: 'primary',
-    size: 'lg',
+    name: "password",
+    label: "Create new Password",
+    type: "password",
+    regex: ".{6,}",
+    errorMessage: "Minimum 6 characters",
+    required: true,
+    clearable: true,
+    filled: true,
+    prependIcon: "mdi:password-outline",
   },
 ];
 
@@ -104,7 +92,7 @@ const contactInfo = [
     title: 'Call Us',
     value: '+1 (555) 123-4567',
     description: 'Mon-Fri from 8am to 6pm',
-    color: 'green',
+    color: 'success',
   },
   {
     icon: 'i-lucide-map-pin',
@@ -148,12 +136,12 @@ const handleFormSubmit = async ({ data }) => {
 
   try {
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
     toast.add({
       title: 'Message Sent!',
       description: `Thank you ${data.name}! We'll get back to you soon.`,
-      color: 'green',
+      color: 'success',
       icon: 'i-lucide-check-circle',
     });
 
@@ -165,7 +153,7 @@ const handleFormSubmit = async ({ data }) => {
     toast.add({
       title: 'Error',
       description: 'Something went wrong. Please try again.',
-      color: 'red',
+      color: 'error',
       icon: 'i-lucide-alert-circle',
     });
   } finally {
@@ -178,7 +166,7 @@ const copyToClipboard = (text, type) => {
     toast.add({
       title: 'Copied!',
       description: `${type} copied to clipboard`,
-      color: 'blue',
+      color: 'info',
       icon: 'i-lucide-copy',
     });
   });
@@ -199,14 +187,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <!-- Hero Section -->
     <section class="relative py-20 overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
       <div class="container mx-auto px-4 relative z-10">
         <div class="hero-content text-center max-w-4xl mx-auto">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text">Get In Touch</h1>
-          <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+          <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">We'd love to hear from you. Send us a
+            message and we'll respond as soon as possible.</p>
         </div>
       </div>
     </section>
@@ -215,14 +205,12 @@ onUnmounted(() => {
     <section class="py-16">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <div
-            v-for="(info, index) in contactInfo"
-            :key="index"
+          <div v-for="(info, index) in contactInfo" :key="index"
             class="contact-card glass-card p-6 text-center hover:scale-105 transition-all duration-300 group cursor-pointer"
-            @click="copyToClipboard(info.value, info.title)"
-          >
+            @click="copyToClipboard(info.value, info.title)">
             <div class="mb-4">
-              <div :class="`w-16 h-16 mx-auto rounded-2xl bg-${info.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
+              <div
+                :class="`w-16 h-16 mx-auto rounded-2xl bg-${info.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
                 <UIcon :name="info.icon" :class="`w-8 h-8 text-${info.color}-500`" />
               </div>
             </div>
@@ -242,20 +230,12 @@ onUnmounted(() => {
           <div class="form-container">
             <div class="glass-card p-8">
               <h2 class="text-3xl font-bold mb-6 gradient-text">Send us a Message</h2>
-              <p class="text-gray-600 dark:text-gray-300 mb-8">Fill out the form below and we'll get back to you within 24 hours.</p>
+              <p class="text-gray-600 dark:text-gray-300 mb-8">Fill out the form below and we'll get back to you within
+                24 hours.</p>
 
-              <DynamicForm
-                v-model="formData"
-                :form-fields="contactFields"
-                submit-label="Send Message"
-                submit-icon="i-lucide-send"
-                :show-submit-button="true"
-                :show-reset-button="false"
-                :enable-animations="true"
-                button-size="lg"
-                @submit="handleFormSubmit"
-                class="space-y-6"
-              />
+              <DynamicForm v-model="formData" :form-fields="contactFields" submit-label="Send Message"
+                submit-icon="i-lucide-send" :submit-button="true" :notify="true" :reset-button="false"
+                @submit="handleFormSubmit" class="space-y-6" />
             </div>
           </div>
 
@@ -264,7 +244,8 @@ onUnmounted(() => {
             <!-- Interactive Map -->
             <div class="glass-card p-8">
               <h3 class="text-2xl font-bold mb-6">Find Us</h3>
-              <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+              <div
+                class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
                 <!-- Placeholder for map - you can integrate Google Maps, Mapbox, etc. -->
                 <div class="text-center">
                   <UIcon name="i-lucide-map-pin" class="w-16 h-16 text-gray-400 mb-4" />
@@ -278,7 +259,8 @@ onUnmounted(() => {
                   <p class="text-xs text-gray-600 dark:text-gray-400">123 Tech Street<br />San Francisco, CA 94105</p>
                 </div>
               </div>
-              <UButton variant="outline" size="sm" class="w-full" @click="copyToClipboard('123 Tech Street, San Francisco, CA 94105', 'Address')">
+              <UButton variant="outline" size="sm" class="w-full"
+                @click="copyToClipboard('123 Tech Street, San Francisco, CA 94105', 'Address')">
                 <template #leading>
                   <UIcon name="i-lucide-copy" class="w-4 h-4" />
                 </template>
@@ -303,7 +285,6 @@ onUnmounted(() => {
                   <span class="font-medium">Closed</span>
                 </div>
               </div>
-              <UDivider class="my-4" />
               <div class="flex items-center gap-2 text-green-600">
                 <UIcon name="i-lucide-clock" class="w-4 h-4" />
                 <span class="text-sm font-medium">Currently Open</span>
@@ -354,22 +335,18 @@ onUnmounted(() => {
         </div>
 
         <div class="max-w-4xl mx-auto">
-          <UAccordion
-            :items="
-              faqs.map((faq, index) => ({
-                label: faq.question,
-                content: faq.answer,
-                defaultOpen: index === 0,
-              }))
-            "
-            :ui="{
+          <UAccordion :items="faqs.map((faq, index) => ({
+            label: faq.question,
+            content: faq.answer,
+            defaultOpen: index === 0,
+          }))
+            " :ui="{
               wrapper: 'space-y-3',
               item: {
                 base: 'glass-card',
                 padding: 'p-6',
               },
-            }"
-          />
+            }" />
         </div>
       </div>
     </section>
@@ -381,14 +358,18 @@ onUnmounted(() => {
         <p class="text-xl mb-8 opacity-90">Let's discuss how we can help bring your ideas to life</p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <UButton size="xl" color="white" variant="solid" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform" @click="copyToClipboard('hello@ourcompany.com', 'Email')">
+          <UButton size="xl" color="white" variant="solid"
+            class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform"
+            @click="copyToClipboard('hello@ourcompany.com', 'Email')">
             <template #leading>
               <UIcon name="i-lucide-mail" class="w-5 h-5" />
             </template>
             Email Us Now
           </UButton>
 
-          <UButton size="xl" color="white" variant="outline" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform" @click="copyToClipboard('+1 (555) 123-4567', 'Phone')">
+          <UButton size="xl" color="white" variant="outline"
+            class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform"
+            @click="copyToClipboard('+1 (555) 123-4567', 'Phone')">
             <template #leading>
               <UIcon name="i-lucide-phone" class="w-5 h-5" />
             </template>

@@ -1,19 +1,17 @@
 <template>
   <div class="min-h-screen no-select" @contextmenu.prevent>
-    <!-- <VitePwaManifest /> -->
-    <ClientOnly>
-      <!-- <UApp> -->
+    <UApp :toaster="toaster">
       <NuxtLayout>
         <NuxtPage />
-      </NuxtLayout>
-      <!-- </UApp> -->
       <PWAPrompt />
-    </ClientOnly>
+      </NuxtLayout>
+       </UApp>
   </div>
 </template>
 
 <script setup>
 // throw new Error('test');
+const toaster = { expand: true , position: 'top-right' }
 </script>
 
 <style>

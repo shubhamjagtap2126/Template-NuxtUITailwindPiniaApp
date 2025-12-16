@@ -1,7 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useGsapAnimations } from '~/composables/useGsapAnimations';
-import { useSwiper } from '~/composables/useSwiper';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 useHead({
   title: 'Welcome to Our Amazing App',
@@ -26,8 +24,7 @@ const { animateHero, animateCards, fadeInUp, animateCounter, floatingAnimation, 
 // Swiper configuration
 const { Swiper, SwiperSlide, testimonialsConfig, heroConfig } = useSwiper();
 
-// Toast for interactions
-const toast = useToast();
+
 
 // Data
 const features = [
@@ -125,11 +122,13 @@ const heroSlides = [
 ];
 
 // Methods
+// Toast for interactions
+const toast = useToast()
 const showToast = (message = 'Action completed successfully!') => {
   toast.add({
     title: 'Success',
     description: message,
-    color: 'green',
+    color: 'success',
     icon: 'i-lucide-check-circle',
   });
 };
@@ -195,37 +194,46 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
     <!-- Hero Section with Swiper -->
     <section ref="heroRef" class="relative h-screen flex items-center justify-center overflow-hidden">
       <Swiper v-bind="heroConfig" class="absolute inset-0 w-full h-full">
         <SwiperSlide v-for="(slide, index) in heroSlides" :key="index" class="relative">
           <div class="absolute inset-0">
-            <NuxtImg :src="slide.image" :alt="slide.title" class="w-full h-full object-cover" loading="eager" :width="1920" :height="1080" />
+            <NuxtImg :src="slide.image" :alt="slide.title" class="w-full h-full object-cover" loading="eager"
+              :width="1920" :height="1080" />
             <div class="absolute inset-0 bg-black/40"></div>
           </div>
-          <div class="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 ref="heroTitleRef" class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-shadow-lg" data-swiper-parallax="-300">
-              {{ slide.title }}
-            </h1>
-            <p ref="heroSubtitleRef" class="text-xl md:text-2xl lg:text-3xl mb-8 max-w-3xl mx-auto text-shadow" data-swiper-parallax="-200">
-              {{ slide.subtitle }}
-            </p>
-            <div ref="heroCtaRef" data-swiper-parallax="-100">
-              <UButton size="xl" color="primary" variant="solid" class="btn-gradient px-8 py-4 text-lg font-semibold" @click="scrollToFeatures">
-                <template #leading>
-                  <UIcon name="i-lucide-arrow-right" class="w-5 h-5" />
-                </template>
-                {{ slide.cta }}
-              </UButton>
+
+          <!-- Content -->
+          <div class="absolute inset-0 z-10 flex flex-col justify-end items-center text-center text-white">
+            <div class="max-w-4xl text-white mb-24">
+              <h1 ref="heroTitleRef" class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-shadow-lg"
+                data-swiper-parallax="-300">
+                {{ slide.title }}
+              </h1>
+              <p ref="heroSubtitleRef" class="text-xl md:text-2xl lg:text-3xl mb-8 max-w-3xl mx-auto text-shadow"
+                data-swiper-parallax="-200">
+                {{ slide.subtitle }}
+              </p>
+              <div ref="heroCtaRef" data-swiper-parallax="-100">
+                <UButton size="xl" color="primary" variant="solid" class="btn-gradient px-8 py-4 text-lg font-semibold"
+                  @click="scrollToFeatures">
+                  <template #leading>
+                    <UIcon name="i-lucide-arrow-right" class="w-5 h-5" />
+                  </template>
+                  {{ slide.cta }}
+                </UButton>
+              </div>
             </div>
           </div>
         </SwiperSlide>
 
         <!-- Navigation -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
+        <div class="hero-button-next swiper-button-next"></div>
+        <div class="hero-button-prev swiper-button-prev"></div>
+        <div class="hero-pagination swiper-pagination"></div>
       </Swiper>
 
       <!-- Floating elements -->
@@ -256,22 +264,25 @@ onUnmounted(() => {
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-20 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
+    <section id="features"
+      class="py-20 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-text">Powerful Features</h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Everything you need to build modern, fast, and beautiful web applications</p>
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Everything you need to build modern,
+            fast,
+            and beautiful web applications</p>
+          <UButton label="Show toast" color="primary" variant="solid" @click="showToast" />
+
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div
-            v-for="(feature, index) in features"
-            :key="index"
+          <div v-for="(feature, index) in features" :key="index"
             class="feature-card glass-card p-8 hover:scale-105 transition-all duration-300 group cursor-pointer"
-            @click="showToast(`Learn more about ${feature.title}`)"
-          >
+            @click="showToast(`Learn more about ${feature.title}`)">
             <div class="mb-6">
-              <div :class="`w-16 h-16 mx-auto rounded-2xl bg-${feature.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
+              <div
+                :class="`w-16 h-16 mx-auto rounded-2xl bg-${feature.color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`">
                 <UIcon :name="feature.icon" :class="`w-8 h-8 text-${feature.color}-500`" />
               </div>
             </div>
@@ -299,7 +310,8 @@ onUnmounted(() => {
             <SwiperSlide v-for="(testimonial, index) in testimonials" :key="index">
               <div class="glass-card p-8 mx-4 h-full">
                 <div class="flex items-center mb-6">
-                  <NuxtImg :src="testimonial.avatar" :alt="testimonial.name" class="w-16 h-16 rounded-full object-cover mr-4" :width="64" :height="64" />
+                  <NuxtImg :src="testimonial.avatar" :alt="testimonial.name"
+                    class="w-16 h-16 rounded-full object-cover mr-4" :width="64" :height="64" />
                   <div>
                     <h4 class="font-bold text-lg">{{ testimonial.name }}</h4>
                     <p class="text-gray-600 dark:text-gray-400">{{ testimonial.role }}</p>
@@ -308,10 +320,12 @@ onUnmounted(() => {
                 </div>
 
                 <div class="flex mb-4">
-                  <UIcon v-for="star in testimonial.rating" :key="star" name="i-lucide-star" class="w-5 h-5 text-yellow-400 fill-current" />
+                  <UIcon v-for="star in testimonial.rating" :key="star" name="i-lucide-star"
+                    class="w-5 h-5 text-yellow-400 fill-current" />
                 </div>
 
-                <blockquote class="text-gray-700 dark:text-gray-300 italic leading-relaxed">"{{ testimonial.content }}"</blockquote>
+                <blockquote class="text-gray-700 dark:text-gray-300 italic leading-relaxed">"{{ testimonial.content }}"
+                </blockquote>
               </div>
             </SwiperSlide>
 
@@ -325,14 +339,19 @@ onUnmounted(() => {
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
+    <section
+      class="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
       <div class="absolute inset-0 bg-black/20"></div>
       <div class="container mx-auto px-4 text-center relative z-10">
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Ready to Get Started?</h2>
-        <p class="text-xl mb-8 max-w-2xl mx-auto opacity-90">Join thousands of developers who trust our platform to build amazing applications</p>
+        <p class="text-xl mb-8 max-w-2xl mx-auto opacity-90">Join thousands of developers who trust our platform to
+          build
+          amazing applications</p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <UButton size="xl" color="white" variant="solid" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform" @click="showToast('Welcome aboard! 🚀')">
+          <UButton size="xl" color="white" variant="solid"
+            class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform"
+            @click="showToast('Welcome aboard! 🚀')">
             <template #leading>
               <UIcon name="i-lucide-play" class="w-5 h-5" />
             </template>
@@ -340,7 +359,8 @@ onUnmounted(() => {
           </UButton>
 
           <NuxtLink to="/about">
-            <UButton size="xl" color="white" variant="outline" class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
+            <UButton size="xl" color="white" variant="outline"
+              class="px-8 py-4 text-lg font-semibold hover:scale-105 transition-transform">
               <template #leading>
                 <UIcon name="i-lucide-info" class="w-5 h-5" />
               </template>
@@ -362,7 +382,8 @@ onUnmounted(() => {
         <p class="text-gray-600 dark:text-gray-300 mb-8">Get the latest updates and tips delivered to your inbox</p>
 
         <div class="max-w-md mx-auto">
-          <DynamicForm :form-fields="newsletterFields" submit-label="Subscribe" submit-icon="i-lucide-mail" :show-submit-button="true" @submit="handleNewsletterSubmit" class="space-y-4" />
+          <DynamicForm :form-fields="newsletterFields" submit-label="Subscribe" submit-icon="i-lucide-mail"
+            :show-submit-button="true" @submit="handleNewsletterSubmit" class="space-y-4" />
         </div>
       </div>
     </section>
