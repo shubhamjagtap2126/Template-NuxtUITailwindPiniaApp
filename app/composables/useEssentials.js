@@ -1,3 +1,5 @@
+
+
 // Function to generate a unique ID with an optional prefix
 export const generateUniqueId = (prefix) => {
   // return `${prefix}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -7,6 +9,22 @@ export const generateUniqueId = (prefix) => {
 export const generateTimeStamp = () => {
   return new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString();
 };
+
+
+export const getFormattedDateTime = () => {
+  const now = new Date();
+
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = String(now.getFullYear());
+
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${day}${month}${year}${hours}${minutes}${seconds}`;
+}
+
 
 // Function to transform data recursively, converting strings to appropriate types
 export const transformData = (data) => {
@@ -24,7 +42,7 @@ export const transformData = (data) => {
 
     try {
       if ((t.startsWith('{') && t.endsWith('}')) || (t.startsWith('[') && t.endsWith(']'))) return transformValue(JSON.parse(t));
-    } catch (e) {}
+    } catch (e) { }
 
     const l = t.toLowerCase();
     if (l === 'true' || l === 'false') return l === 'true';
@@ -202,19 +220,28 @@ export const scrollToSection = (id) => {
 };
 
 export const handleCall = (contact) => {
+  const toast = useToast()
   if (contact) {
     window.open(`tel:+91${contact}`, '_blank');
   } else {
-    $q.notify({ type: 'warning', message: 'Contact number not available.' });
+    toast.add({
+      type: 'error',
+      message: 'Contact number not available.',
+    });
   }
 };
 
 export const handleWhatsApp = (contact, text) => {
+  const toast = useToast()
   text = text || 'Hi Petopia Pet Parent!';
   if (contact) {
     window.open(`https://wa.me/91${contact}?text=${encodeURIComponent(text)}`, '_blank');
   } else {
-    showNotify({ color: 'negative', msg: 'Sorry for inconvenience. WhatsApp contact not available.' });
+    toast.add({
+      type: 'error',
+      message: 'Sorry for inconvenience. WhatsApp contact not available.',
+    });
+
   }
 };
 
@@ -224,14 +251,152 @@ export const shareWhatsApp = (text) => {
 };
 
 export const copyToClipboard = (text) => {
+  const toast = useToast()
   text = text || 'Hello from Sakal Petopia!';
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      showNotify({ color: 'positive', msg: 'Copied to clipboard!', position: 'top' });
+      toast.add({
+        type: 'success',
+        message: 'Copied to clipboard!',
+      });
     })
     .catch((err) => {
       console.error('Failed to copy link:', err);
-      showNotify({ color: 'negative', msg: 'Failed to copy.', position: 'top' });
+      toast.add({
+        type: 'error',
+        message: 'Failed to copy.',
+      });
     });
 };
+
+import { computed } from "vue";
+export const isMobile = computed(() => {
+  if (process.client) {
+    return window.innerWidth <= 768;
+  }
+})
+
+export const getUrl = () => {
+  if (process.client) {
+    return window.location.origin
+  }
+}
+
+
+export const openUrlNewTab = (url) => {
+  window.open(url, '_blank', 'noopener,noreferrer')
+}
+
+// got section
+export const gotSection = (section) => {
+  const sectionElement = document.querySelector(`${section}`)
+  if (sectionElement) {
+    sectionElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+}
+
+
+// calculate age based on the  birthdate year
+export const calculateAge = (birthdate) => {
+  const today = new Date();
+  const birthDate = new Date(birthdate);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const month = today.getMonth() - birthDate.getMonth();
+  if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+
+export const handleFileUpload = async ({ files, namePrefix, folderPath, platform = 'cloudinary' }) => {
+  if (!files) return [];
+
+  // Normalize to array (handle single File object or FileList/Array)
+  const fileList = Array.isArray(files) ? files : (files instanceof FileList ? Array.from(files) : [files]);
+
+  if (fileList.length === 0) return [];
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+
+  // update the filename and extentions
+  const fileBase64 = await Promise.all(
+    fileList.map(async (file, index) => ({
+      name: namePrefix + '_' + (index + 1), // Improved naming convention
+      content: await toBase64(file)
+    }))
+  );
+
+  try {
+    const response = await $fetch('/api/imageUpload', {
+      method: 'POST',
+      body: {
+        images: fileBase64,
+        platform: platform, // 'google_drive', 'cloudinary', or 'imagekit'
+        folderPath: folderPath
+      }
+    });
+    if (response.error) {
+      console.error('File upload error:', response.error);
+      throw response.error;
+    }
+    return response
+  } catch (error) {
+    console.error('File upload error:', error);
+    throw error;
+  }
+}
+
+
+export const isCurrentTimeInSlot = ({ start, end }) => {
+  const now = new Date().getTime();
+
+  const safeParseDate = (d) => {
+    const parts = d.split(/[\/\s:]/);
+    if (parts.length < 6) return 0;
+    // Date(YYYY, MM-1, DD, HH, mm, ss)
+    return new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0]),
+      parseInt(parts[3]),
+      parseInt(parts[4]),
+      parseInt(parts[5])
+    ).getTime();
+  };
+
+  // add if start is not given then check only end
+  if (!start) {
+    return now <= safeParseDate(end);
+  }
+
+  return now >= safeParseDate(start) && now <= safeParseDate(end);
+};
+
+
+import * as htmlToImage from 'html-to-image';
+import download from 'downloadjs';
+export const downloadAsImage = (elementId, imageName) => {
+  // downloadPass
+  htmlToImage
+    .toPng(document.getElementById(elementId))
+    .then((dataUrl) => {
+      const img = new Image();
+      img.src = dataUrl;
+      download(dataUrl, `${imageName}_Chitrakala_${new Date().getFullYear().toString()}.png`)
+      // document.body.appendChild(img);
+      // toast.add({ title: 'Downloading Entry Pass...', color: 'info' });
+    })
+    .catch((err) => {
+      console.error('oops, something went wrong!', err);
+    });
+}
+

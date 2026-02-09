@@ -1,60 +1,55 @@
 <template>
-  <UModal v-model="dialog" v-if="deferredPrompt && !isAppInstalled" prevent-close>
-    <UCard class="w-11/12 max-w-sm shadow-2xl rounded-lg transform hover:scale-105 transition-transform duration-300 flex flex-col">
-      <div class="row no-wrap bg-primary text-white rounded-t-lg p-4 flex items-center gap-3">
-        <Icon name="i-heroicons-cloud-arrow-down" size="md" class="text-white" />
-        <div class="text-lg font-semibold">Install the App for Best Experience!</div>
-      </div>
+  <!-- v-model:open="dialog" -->
+  <UModal v-model:open="dialog" v-if="deferredPrompt && !isAppInstalled" :dismissible="false">
+    <template #content>
+      <div
+        class="max-w-sm shadow-2xl rounded-lg transform hover:scale-102 transition-transform duration-300 flex flex-col">
+        <div class="row no-wrap bg-primary text-white rounded-t-lg p-2 flex items-center gap-3">
+          <Icon name="i-heroicons-cloud-arrow-down" size="100px" class="text-white" />
+          <div class="text-lg font-semibold">Install the App for Best Experience!</div>
+        </div>
 
-      <div class="text-gray-800 p-4">
-        <p class="text-sm">Add this app to your home screen for quick access and an enhanced experience.</p>
-      </div>
+        <div class="text-gray-800 dark:text-gray-200 p-4">
+          <p class="text-sm">Add this app to your home screen for quick access and an enhanced experience.</p>
+        </div>
 
-      <div class="p-4 flex justify-end gap-2">
-        <UButton label="Later" color="gray" variant="solid" class="rounded-md" @click="closePrompt" />
-        <UButton unelevated label="Install Now" color="primary" icon="i-heroicons-arrow-down-tray" class="rounded-md text-white shadow-md hover:shadow-lg transition-shadow" @click="installPWA" />
+        <div class="p-4 flex justify-end gap-2">
+          <UButton label="Later" color="warning" variant="outline" class="rounded-md" @click="closePrompt" />
+          <UButton unelevated label="Install Now" color="primary" icon="i-heroicons-arrow-down-tray"
+            class="rounded-md text-white shadow-md hover:shadow-lg transition-shadow" @click="installPWA" />
+        </div>
       </div>
-    </UCard>
+    </template>
   </UModal>
+  <!-- v-model:open="showOpenAppDialog" -->
+  <UModal v-if="isAppInstalled && showOpenAppDialog && !hasOpenedApp" :dismissible="false">
+    <template #content>
+      <div
+        class="max-w-sm shadow-2xl rounded-lg transform hover:scale-102 transition-transform duration-300 flex flex-col">
+        <div class="row no-wrap bg-green-600 text-white rounded-t-lg p-2 flex items-center gap-3">
+          <Icon name="i-heroicons-check-circle" size="100px" class="text-white" />
+          <div class="text-lg font-semibold">App Installed Successfully!</div>
+        </div>
 
-  <UModal v-model="showOpenAppDialog" v-if="isAppInstalled && showOpenAppDialog && !hasOpenedApp" prevent-close>
-    <UCard
-      class="w-11/12 max-w-sm shadow-2xl rounded-lg transform hover:scale-105 transition-transform duration-300 flex flex-col"
-      :ui="{
-        background: 'bg-white',
-        body: { padding: 'px-0 py-0 sm:p-0' },
-        header: { padding: 'px-0 py-0 sm:p-0' },
-        footer: { padding: 'px-0 py-0 sm:p-0' },
-      }"
-    >
-      <div class="row no-wrap bg-green-600 text-white rounded-t-lg p-4 flex items-center gap-3">
-        <Icon name="i-heroicons-check-circle" size="md" class="text-white" />
-        <div class="text-lg font-semibold">App Installed Successfully!</div>
-      </div>
+        <div class="text-gray-800 p-4">
+          <p class="text-sm">The app has been successfully added to your home screen. Would you like to open it now?</p>
+        </div>
 
-      <div class="text-gray-800 p-4">
-        <p class="text-sm">The app has been successfully added to your home screen. Would you like to open it now?</p>
-      </div>
-
-      <div class="p-4 flex justify-end gap-2">
-        <UButton
-          label="Not Now"
-          color="gray"
-          variant="solid"
-          class="rounded-md"
-          @click="
+        <div class="p-4 flex justify-end gap-2">
+          <UButton label="Not Now" color="gray" variant="solid" class="rounded-md" @click="
             showOpenAppDialog = false;
-            hasOpenedApp = true;
-          "
-        />
-        <UButton unelevated label="Open App" color="green" icon="i-heroicons-arrow-top-right-on-square" class="rounded-md text-white shadow-md hover:shadow-lg transition-shadow" @click="openApp" />
+          hasOpenedApp = true;
+          " />
+          <UButton unelevated label="Open App" color="green" icon="i-heroicons-arrow-top-right-on-square"
+            class="rounded-md text-white shadow-md hover:shadow-lg transition-shadow" @click="openApp" />
+        </div>
       </div>
-    </UCard>
+    </template>
   </UModal>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 const deferredPrompt = ref(null);
 const isAppInstalled = ref(false);
@@ -98,7 +93,7 @@ const openApp = () => {
   showOpenAppDialog.value = false;
   // Open the app using the current window link.
   // When opened as a PWA, this will open it in standalone mode.
-  window.location.href = window.location.href;
+  window.location.href = getUrl();
 };
 
 const closePrompt = () => {
@@ -115,6 +110,7 @@ onMounted(() => {
 
   window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
   window.addEventListener('appinstalled', handleAppInstalled);
+  // console.log(handleBeforeInstallPrompt)
 });
 
 onBeforeUnmount(() => {

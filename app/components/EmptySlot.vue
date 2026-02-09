@@ -1,14 +1,18 @@
 <template>
-  <div :class="class" class="flex flex-col items-center justify-center p-8 text-center bg-white max-w-sm mx-auto">
+  <div :class="class" class="flex flex-col items-center justify-center p-8 text-center  dark:text-gray-200 mx-auto">
+    <slot name="before" />
+
     <Icon :name="icon" size="150px" :class="class" class="text-blue-500 mb-4 animate-bounce-in" />
 
-    <h2 :class="class" class="text-3xl text-gray-800 mb-2 leading-tight">
-      {{ heading }}
+    <h2 :class="class" class="text-3xl mb-2 leading-tight">
+      {{ title }}
     </h2>
 
-    <p :class="class" class="text-lg text-gray-600 leading-relaxed">
+    <p :class="class" class="text-lg leading-relaxed">
       {{ caption }}
     </p>
+
+    <slot name="after" />
   </div>
 </template>
 
@@ -23,13 +27,15 @@ defineProps({
     type: String,
     default: 'text-blue-500',
   },
-  heading: {
+  title: {
     type: String,
     required: true,
+    default: "Title Text"
   },
   caption: {
     type: String,
     required: true,
+    default: "Caption Text"
   },
 });
 </script>
@@ -41,10 +47,12 @@ defineProps({
     transform: scale(0.5);
     opacity: 0;
   }
+
   70% {
     transform: scale(1.1);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
   }

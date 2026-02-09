@@ -1,9 +1,12 @@
 @import 'tailwindcss';
-@import 'swiper/css';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
-@import 'swiper/css/effect-fade';
 @import '@nuxt/ui';
+
+@custom-variant dark (&:where(.dark, .dark *));
+/*@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap");*/
+
+* {
+  user-select: none;
+}
 
 :root {
   --ui-primary: #184890;
@@ -93,7 +96,9 @@
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
   }
   100% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.4);
+    box-shadow:
+      0 0 40px rgba(59, 130, 246, 0.8),
+      0 0 60px rgba(59, 130, 246, 0.4);
   }
 }
 
@@ -131,4 +136,12 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-500 dark:bg-gray-500;
+}
+
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
