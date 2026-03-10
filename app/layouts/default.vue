@@ -34,15 +34,7 @@
           <!-- Right side controls -->
           <div class="flex items-center space-x-2">
             <!-- Theme toggle -->
-            <div
-              class="dark:text-primary bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-full">
-              <client-only>
-                <UButton
-                  :icon="colorMode.preference === 'dark' ? 'i-heroicons-sun-20-solid' : 'i-heroicons-moon-20-solid'"
-                  color="gray" size="md" variant="ghost" class=" dark:text-white" aria-label="Theme"
-                  @click="toggleColorMode" />
-              </client-only>
-            </div>
+            <ThemeToggle />
             <!-- Mobile menu button -->
             <UButton icon="i-lucide-menu" color="gray" variant="ghost" size="sm"
               class="w-10 h-10 md:hidden hover:scale-110 transition-transform duration-200"
