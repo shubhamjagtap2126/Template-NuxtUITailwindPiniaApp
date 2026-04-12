@@ -1,6 +1,7 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-400 to-purple-600 p-4 sm:p-6">
-    <UCard class="rounded-3xl shadow-2xl p-8 max-w-lg w-full text-center transform transition-all duration-500 hover:scale-105">
+  <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-red-400 to-purple-600 p-4 sm:p-6">
+    <UCard
+      class="rounded-3xl bg-gray-100 shadow-2xl p-8 max-w-lg w-full text-center transform transition-all duration-500 hover:scale-105">
       <div class="q-py-md">
         <div class="text-8xl font-bold text-red-600 leading-none mb-4">
           {{ error.statusCode || 'Error' }}
@@ -13,12 +14,11 @@
         </p>
       </div>
 
-      <UDivider class="my-6" />
-
-      <div class="flex justify-center gap-4 bg-white">
-        <UButton icon="i-heroicons-home" variant="solid" color="warning" @click="clearNuxtError" class="mt-12 px-8 py-4 text-black font-semibold text-lg"> Home </UButton>
-        <UButton icon="i-heroicons-arrow-left" @click="goBackAndClearError" class="mt-12 px-8 py-4 text-black font-semibold text-lg"> Back </UButton>
-        <UButton trailing-icon="i-lucide-rocket">Show Toast</UButton>
+      <div class="flex justify-center gap-4 mt-10">
+        <UButton icon="i-heroicons-home" variant="solid" color="warning" @click="clearNuxtError"
+          class="px-4 py-2 text-black font-semibold text-lg"> Home </UButton>
+        <UButton icon="i-heroicons-arrow-left" @click="goBackAndClearError"
+          class="px-4 py-2 text-black font-semibold text-lg"> Back </UButton>
       </div>
     </UCard>
   </div>

@@ -1,7 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
+import pkg from './package.json';
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-persistedstate', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxt/scripts', '@vite-pwa/nuxt', '@nuxtjs/color-mode'],
+  modules: ['@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-persistedstate', '@nuxt/fonts', '@nuxt/icon', '@nuxt/image', '@nuxt/scripts', '@vite-pwa/nuxt', '@nuxtjs/color-mode', 'motion-v/nuxt'],
   imports: {
     dirs: ['plugins', 'composables', 'stores'],
   },
@@ -12,10 +13,10 @@ export default defineNuxtConfig({
       titleTemplate: '%s | ModernApp',
       meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }, { name: 'description', content: 'ModernApp' }],
       link: [
-        { rel: 'manifest', href: 'manifest.json' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'icon', type: 'image/webp', href: '/favicon.webp', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', type: 'image/webp', href: '/favicon.webp', media: '(prefers-color-scheme: light)' },
       ],
-      viewport: 'width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no',
     },
   },
   colorMode: {
@@ -32,10 +33,22 @@ export default defineNuxtConfig({
     'swiper/css/effect-cards',
     'swiper/css/effect-cube',
     'swiper/css/effect-creative',
+    'driver.js/dist/driver.css',
+    'lenis/dist/lenis.css',
   ],
   runtimeConfig: {
-    public: { SECURELS_SECRET: process.env.SECURELS_SECRET },
-    server: { APP_SECRET: process.env.APP_SECRET, MONGODB_URI_DEV: process.env.MONGODB_URI_DEV, MONGODB_URI_PROD: process.env.MONGODB_URI_PROD },
+    public: {
+      SECURELS_SECRET: process.env.SECURELS_SECRET,
+      APP_VERSION: pkg.version,
+      SUPABASE_URL: process.env.SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY: process.env.SUPABASE_PUBLISHABLE_KEY,
+      googleTranslate: {
+        defaultLanguage: 'en',
+        supportedLanguages: ['en', 'mr', 'hi'],
+      },
+    },
+    JWT_SECRET: process.env.JWT_SECRET,
+    MONGODB_URI: process.env.MONGODB_URI,
   },
   // srcDir: 'client/',
   compatibilityDate: '2025-05-15',
@@ -45,8 +58,9 @@ export default defineNuxtConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      allowedHosts: ['114.29.230.248', 'petopia.esakal.com', '192.168.200.75', 'localhost:5100'],
+    server: { allowedHosts: [''] },
+    optimizeDeps: {
+      include: ['@vue/devtools-core', '@vue/devtools-kit', 'gsap', 'gsap/ScrollTrigger', 'swiper/modules', 'swiper/vue'],
     },
   },
   image: {

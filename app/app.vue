@@ -3,22 +3,30 @@
     <UApp :toaster="toaster">
       <NuxtLayout>
         <NuxtPage />
-      <PWAPrompt />
+        <!-- <PWAPrompt /> -->
       </NuxtLayout>
-       </UApp>
+    </UApp>
   </div>
 </template>
 
 <script setup>
 // throw new Error('test');
-const toaster = { expand: true , position: 'top-right' }
+const toaster = { expand: true, position: 'top-right' }
+
+onMounted(() => {
+  console.log('App mounted');
+  // throw new Error('test');
+})
 </script>
 
 <style>
 .no-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
 }
 
 input::-webkit-outer-spin-button,
@@ -31,10 +39,12 @@ input::-webkit-inner-spin-button {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 .animate-fade-in {
   animation: fade-in 1s ease-out forwards;
 }
@@ -44,11 +54,13 @@ input::-webkit-inner-spin-button {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .animate-slide-in-bottom {
   animation: slide-in-bottom 1s ease-out forwards;
 }
@@ -58,37 +70,45 @@ input::-webkit-inner-spin-button {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .animate-fade-in-up {
   animation: fade-in-up 0.8s ease-out forwards;
 }
 
 /* Subtle bounce for CTA button */
 @keyframes bounce-subtle {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-20px);
   }
 }
+
 .animate-bounce-subtle {
   animation: bounce-subtle 2s infinite ease-in-out;
 }
 
 /* Ensure horizontal scrolling for testimonials on small screens */
 .overflow-x-auto {
-  -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
-  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  /* For smoother scrolling on iOS */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .overflow-x-auto::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
+  /* Chrome, Safari, Edge */
 }
 
 /* Specific styling for member cards */
@@ -98,6 +118,7 @@ input::-webkit-inner-spin-button {
 }
 
 .carousel {
+
   /* ... */
   &:hover .animateGroup {
     animation-play-state: paused;
@@ -106,7 +127,8 @@ input::-webkit-inner-spin-button {
 
 .animateGroup {
   /* ... */
-  will-change: transform; /* We should be nice to the browser - let it know what we're going to animate. */
+  will-change: transform;
+  /* We should be nice to the browser - let it know what we're going to animate. */
   animation: scrolling 6s linear infinite;
 }
 
@@ -114,6 +136,7 @@ input::-webkit-inner-spin-button {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }

@@ -201,8 +201,8 @@ const handleBlur = (fieldName) => {
     </div>
     <div class="mt-8">
       <button v-if="props.showSubmitButton" @click="onSubmit"
-        class="flex items-center justify-center gap-3 w-full font-bold rounded-xl px-6 py-4 text-center transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl relative overflow-hidden group"
-        :class="isFormValid ? 'bg-gradient-to-r from-sakal-primary to-rose-600 text-white cursor-pointer' : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500 dark:border-gray-300 dark:border'"
+        class="flex items-center justify-center gap-3 w-full font-bold rounded-xl px-6 py-2 text-center transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl relative overflow-hidden group"
+        :class="isFormValid ? 'btn-theme dark:border dark:border-gray-300 text-white cursor-pointer' : 'bg-slate-200 text-gray-400 cursor-not-allowed  dark:bg-gray-700 dark:border-gray-300 dark:border'"
         :disabled="!isFormValid">
         <span
           class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>

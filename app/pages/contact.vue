@@ -182,7 +182,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  cleanup();
+  // cleanup();
 });
 </script>
 
